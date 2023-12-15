@@ -1,0 +1,38 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #cacaca;
+    font-family: 'Arial', sans-serif;
+}
+
+#clearButton{
+   background-color: rgb(161, 6, 6);
+}
+
+canvas {
+    border: 2px solid #000;
+    border-radius: 1vh;
+    background-color: #fff;
+    cursor: crosshair;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
