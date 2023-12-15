@@ -1,5 +1,3 @@
-# api/Makefile
-
 # Set the installation prefix to /opt/ and the base name of the current directory
 PREFIX ?= /opt/$(shell basename $(realpath .))
 
@@ -9,13 +7,16 @@ BIN_DIR = $(INSTALL_DIR)/bin
 LIB_DIR = $(INSTALL_DIR)/lib
 
 # Specify the targets
-.PHONY: all install
+.PHONY: all install clean
 
-# List of object files specific to the "api" directory
-API_OBJECTS = api_handler.o main.o
+# List of object files
+OBJECTS = api/api_handler.o api/main.o civetweb-1.16/out/src/CivetServer.o civetweb-1.16/out/src/main.o civetweb-1.16/out/src/civetweb.o
 
-# Main executable for the "api" directory
-API_EXECUTABLE = $(BIN_DIR)/api/my_civetweb_program
+# Main executable
+EXECUTABLE = $(BIN_DIR)/my_civetweb_program
+
+# Shared library
+SHARED_LIBRARY = $(LIB_DIR)/libcivetweb.so
 
 # Include paths
 INCLUDE_DIRS = -I../CivetWebSourceCode/include
@@ -23,22 +24,31 @@ INCLUDE_DIRS = -I../CivetWebSourceCode/include
 # Compiler flags
 CXXFLAGS = -std=c++11 $(INCLUDE_DIRS)
 
-all: $(API_EXECUTABLE)
+all: $(EXECUTABLE) $(SHARED_LIBRARY)
+    @echo "Build completed. Use 'make install' to install."
 
-$(API_EXECUTABLE): $(API_OBJECTS)
-	@echo "Linking executable $@"
-	@mkdir -p $(BIN_DIR)/api
-	$(CXX) $(LDFLAGS) -o $@ $^
+$(EXECUTABLE): $(OBJECTS)
+    @echo "Linking executable $@"
+    @mkdir -p $(BIN_DIR)
+    $(CXX) $(LDFLAGS) -o $@ $^
+
+$(SHARED_LIBRARY): $(OBJECTS)
+    @echo "Linking shared library $@"
+    @mkdir -p $(LIB_DIR)
+    $(CXX) $(LDFLAGS) -shared -o $@ $^
 
 # Rule for compiling source files
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+    @echo "Compiling $<"
+    $(CXX) $(CXXFLAGS) -c -o $@ $<
 
 install: all
-	@echo "Installing to $(INSTALL_DIR)"
-	install -d $(BIN_DIR)/api
-	install -m 755 $(API_EXECUTABLE) $(BIN_DIR)/api
+    @echo "Installing to $(INSTALL_DIR)"
+    install -d $(BIN_DIR)
+    install -m 755 $(EXECUTABLE) $(BIN_DIR)
+    install -d $(LIB_DIR)
+    install -m 755 $(SHARED_LIBRARY) $(LIB_DIR)
 
 clean:
-	@echo "Cleaning up"
-	rm -f $(API_OBJECTS) $(API_EXECUTABLE)
+    @echo "Cleaning up"
+    rm -f $(OBJECTS) $(EXECUTABLE) $(SHARED_LIBRARY)
