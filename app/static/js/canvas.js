@@ -38,7 +38,7 @@ $(document).ready(function() {
 
     function sendDrawing() {
         const imageData = canvas.toDataURL();
-        baseURL = "API.predict";
+        baseURL = "api/post=SendPrediction";
 
         $.ajax({
             type: 'POST',

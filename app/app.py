@@ -6,7 +6,7 @@ app = Flask(__name__, static_folder='static')
 def index():
     return render_template('/html/index.html')
 
-@app.route('/API.predict', methods=['POST'])
+@app.route('/api/post=SendPrediction', methods=['POST'])
 def predict():
     try:
         data = request.get_json()
@@ -14,7 +14,7 @@ def predict():
         # prediction logic here
         result = {'result': 'prediction result'}
 
-        return jsonify(result)
+        return jsonify(data)
     except Exception as e:
         app.logger.error(f"An error occurred: {str(e)}")
         return jsonify({'error': 'Internal Server Error'}), 500
