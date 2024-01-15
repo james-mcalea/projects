@@ -1,8 +1,8 @@
 CC := g++
 CFLAGS := -std=c++11 -Wall
-SRCDIR := src/server
-OBJDIR := ../build/obj/server
-BINDIR := ../build/bin
+SRCDIR := .
+OBJDIR := ../../build/obj/server
+BINDIR := ../../build/bin
 
 SRC := $(wildcard $(SRCDIR)/*.cpp)
 OBJ := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRC))
