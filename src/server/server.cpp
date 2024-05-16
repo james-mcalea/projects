@@ -1,6 +1,6 @@
 #include "server.h"
-#include "user.cpp"
-#include "userState.cpp"
+#include "user.h"
+#include "user_utils.h"
 
 #include <iostream>
 
@@ -34,19 +34,14 @@ void Server::run()
     if (!isRunning) {
         isRunning = true;
         serverThread = std::thread([this] { runServer(); });
+        serverThread.detach();
+
     }
 }
 
 void Server::stop()
 {
     DEBUG("[%s] \t %s",__func__ ,"Stopping instance!");
-    if (isRunning) {
-        isRunning = false;
-        if (serverThread.joinable()) {
-            serverThread.join();
-        }
-    }
-
 }
 
 void Server::runServer()
@@ -64,13 +59,19 @@ void Server::runServer()
 int main()
 {
     Server& serverInstance = Server::getInstance();
-
+    
 
     serverInstance.run();
-    std::this_thread::sleep_for(std::chrono::seconds(3));
+
+    User myUser;
+    myUser.addAttempt();
+    myUser.addAttempt();
+    myUser.addAttempt();
+    myUser.addAttempt();
+    int size = myUser.getNoOfAttempts();
     serverInstance.stop();
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
-
+    DEBUG("[%s] \t %s%d",__func__, "Attempts.size: ", size);
     DEBUG("[%s] \t %s",__func__ ,"Main thread is done");
 }
