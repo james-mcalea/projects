@@ -1,5 +1,6 @@
 import Button from "./components/Button";
 import Alert from "./components/Alert";
+import Test from "./components/Test";
 import { useState } from "react";
 function App() {
   const [alertVisible, setAlertVisibility] = useState(false);
@@ -9,9 +10,10 @@ function App() {
       {alertVisible && (
         <Alert onClose={() => setAlertVisibility(false)}>My alert</Alert>
       )}
-      <Button colour="primary" onClick={() => setAlertVisibility(true)}>
+      {/* <Button colour="primary" onClick={() => setAlertVisibility(true)}>
         My button
-      </Button>
+      </Button> */}
+      <Test></Test>
     </div>
   );
 }
